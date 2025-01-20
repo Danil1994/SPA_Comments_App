@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main_app.apps.CommentsConfig',
     'rest_framework',
+    'captcha',
 ]
 
 MIDDLEWARE = [

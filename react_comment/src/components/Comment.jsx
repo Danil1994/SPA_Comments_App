@@ -4,6 +4,11 @@ import CommentForm from "./CommentForm";
 
 const BASE_URL = "http://127.0.0.1:8000";
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleString(); // Это отформатирует дату в удобочитаемый формат
+};
+
 const Comment = ({ comment }) => {
   const [replies, setReplies] = useState([]);
   const [showReplies, setShowReplies] = useState(false);
@@ -24,7 +29,8 @@ const Comment = ({ comment }) => {
 
   return (
     <div style={{ marginLeft: comment.parent ? "20px" : "0px", marginTop: "10px" }}>
-      <strong>{comment.user_name}</strong> ({comment.email}) написал:
+      <strong>{comment.user_name}</strong> ({comment.email}) написал в{" "}
+      <strong>{comment.created_at ? formatDate(comment.created_at) : "неизвестное время"}</strong>:
       <p>{comment.text}</p>
 
       {/* Если есть home_page (ссылка на сайт), отображаем ссылку */}

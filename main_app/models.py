@@ -1,7 +1,7 @@
 import bleach
 
 from django.db import models
-
+from captcha.fields import CaptchaField
 
 ALLOWED_TAGS = ['a', 'code', 'i', 'strong']
 ALLOWED_ATTRIBUTES = {
@@ -15,6 +15,7 @@ class Comment(models.Model):
     home_page = models.URLField(blank=True, null=True, verbose_name="Home Page")
     text = models.TextField(verbose_name="Text")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
+    # captcha = CaptchaField()
     image = models.ImageField(
         upload_to="images/",
         blank=True,

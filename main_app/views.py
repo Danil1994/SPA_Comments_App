@@ -4,9 +4,22 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
 from .models import Comment
 from .serializers import CommentSerializer
 
+
+class CaptchaAPIView(APIView):
+    def get(self, request):
+        captcha_key = CaptchaStore.generate_key()
+        captcha_image = captcha_image_url(captcha_key)
+        absolute_captcha_image = request.build_absolute_uri(captcha_image)
+
+        return Response({
+            'captcha_key': captcha_key,
+            'captcha_image': absolute_captcha_image
+        })
 
 class CommentPagination(PageNumberPagination):
     page_size = 25
@@ -41,4 +54,3 @@ class ReplyListView(APIView):
         replies = Comment.objects.filter(parent_id=parent_id).order_by('-created_at')[:limit]
         serializer = CommentSerializer(replies, many=True)
         return Response(serializer.data)
-

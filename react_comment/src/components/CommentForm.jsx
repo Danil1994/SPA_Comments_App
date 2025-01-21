@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { addComment } from "../services/api";
 
-const CommentForm = ({ onAdd }) => {
+const CommentForm = ({ onAdd, parent = null }) => {
   const [form, setForm] = useState({ user_name: "", email: "", text: "" });
 
   const handleChange = (e) => {
@@ -10,13 +10,18 @@ const CommentForm = ({ onAdd }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await addComment(form);
-    onAdd(response.data); // Update comments
-    setForm({ user_name: "", email: "", text: "" });
+    try {
+      const newComment = { ...form, parent }; // Добавляем parent, если он есть
+      const response = await addComment(newComment);
+      onAdd(response.data); // Вызываем callback для обновления списка комментариев/ответов
+      setForm({ user_name: "", email: "", text: "" }); // Очищаем форму
+    } catch (error) {
+      console.error("Ошибка при добавлении комментария:", error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
       <input
         type="text"
         name="user_name"
@@ -35,12 +40,12 @@ const CommentForm = ({ onAdd }) => {
       />
       <textarea
         name="text"
-        placeholder="Текст комментария"
+        placeholder="Напишите ваш комментарий..."
         value={form.text}
         onChange={handleChange}
         required
       />
-      <button type="submit">Добавить комментарий</button>
+      <button type="submit">Отправить</button>
     </form>
   );
 };

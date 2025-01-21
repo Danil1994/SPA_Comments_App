@@ -11,3 +11,4 @@ wheel==0.45.1
 pillow==11.1.0
 bleach==6.2.0
 django-cors-headers==4.6.0
+faker==33.3.1

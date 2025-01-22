@@ -22,6 +22,7 @@ const CommentList = () => {
         // Обновляем состояние пагинации
         setHasNext(!!response.data.next); // Если `next` есть, кнопка "Следующая" активна
         setHasPrevious(!!response.data.previous); // Если `previous` есть, кнопка "Предыдущая" активна
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (error) {
         console.error("Ошибка загрузки комментариев:", error);
       }

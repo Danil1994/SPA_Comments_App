@@ -10,6 +10,7 @@ const formatDate = (dateString) => {
   return date.toLocaleString(); // Это отформатирует дату в удобочитаемый формат
 };
 
+
 const Comment = ({ comment, level = 0 }) => {
   const [replies, setReplies] = useState([]);
   const [showReplies, setShowReplies] = useState(false);

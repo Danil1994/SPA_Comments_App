@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { addComment, fetchCaptcha } from "../services/api";
+import "../css/CommentForm.css";
 
 const VALID_IMAGE_FORMATS = ["image/jpeg", "image/png", "image/gif"];
 const MAX_FILE_SIZE = 100 * 1024; // 100 КБ
@@ -144,70 +145,71 @@ const handleSubmit = async (e) => {
 
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <input
-        type="text"
-        name="user_name"
-        placeholder="Имя"
-        value={form.user_name}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={form.email}
-        onChange={handleChange}
-        required
-      />
-      <input
-      type="url"
-      name="home_page"
-      placeholder="Домашняя страница (необязательно)"
-      value={form.home_page || ""}
-      onChange={handleChange}
-      />
+    <form onSubmit={handleSubmit} className="comment-form">
+  {error && <p className="error-message">{error}</p>}
 
-            {/* Панель с кнопками HTML-тегов */}
-      <div style={{ marginBottom: "10px" }}>
-        <button type="button" onClick={() => addHtmlTag("i")}>[i]</button>
-        <button type="button" onClick={() => addHtmlTag("strong")}>[strong]</button>
-        <button type="button" onClick={() => addHtmlTag("code")}>[code]</button>
-        <button type="button" onClick={() => addHtmlTag("a")}>[a]</button>
-      </div>
+  <input
+    type="text"
+    name="user_name"
+    placeholder="Имя"
+    value={form.user_name}
+    onChange={handleChange}
+    required
+  />
 
-        <textarea
-          ref={textareaRef} // Привязываем ref
-          id="comment-textarea"
-          name="text"
-          placeholder="Напишите ваш комментарий..."
-          value={form.text}
-          onChange={handleChange}
-          required
-        />
+  <input
+    type="email"
+    name="email"
+    placeholder="Email"
+    value={form.email}
+    onChange={handleChange}
+    required
+  />
 
-        <div>
-        <img src={captcha.captcha_image} alt="CAPTCHA"/>
-        <button type="button" onClick={loadCaptcha}>Обновить CAPTCHA</button>
-      </div>
+  <input
+    type="url"
+    name="home_page"
+    placeholder="Домашняя страница (необязательно)"
+    value={form.home_page || ""}
+    onChange={handleChange}
+  />
 
-      <input
-        type="text"
-        name="captcha_value"
-        placeholder="Введите CAPTCHA"
-        value={form.captcha_value}
-        onChange={(e) => setForm({ ...form, captcha_value: e.target.value })}
-        required
-      />
+  <div className="tag-buttons">
+    <button type="button" onClick={() => addHtmlTag("i")}>[i]</button>
+    <button type="button" onClick={() => addHtmlTag("strong")}>[strong]</button>
+    <button type="button" onClick={() => addHtmlTag("code")}>[code]</button>
+    <button type="button" onClick={() => addHtmlTag("a")}>[a]</button>
+  </div>
 
-      <input type="file" accept="image/*" onChange={handleImageChange} />
-      <input type="file" accept=".txt" onChange={handleFileChange} />
+  <textarea
+    ref={textareaRef}
+    id="comment-textarea"
+    name="text"
+    placeholder="Напишите ваш комментарий..."
+    value={form.text}
+    onChange={handleChange}
+    required
+  />
 
+  <div>
+    <img src={captcha.captcha_image} alt="CAPTCHA" />
+    <button type="button" onClick={loadCaptcha}>Обновить CAPTCHA</button>
+  </div>
 
-      <button type="submit">Отправить</button>
-    </form>
+  <input
+    type="text"
+    name="captcha_value"
+    placeholder="Введите CAPTCHA"
+    value={form.captcha_value}
+    onChange={(e) => setForm({ ...form, captcha_value: e.target.value })}
+    required
+  />
+
+  <input type="file" accept="image/*" onChange={handleImageChange} />
+  <input type="file" accept=".txt" onChange={handleFileChange} />
+
+  <button type="submit">Отправить</button>
+</form>
   );
 };
 

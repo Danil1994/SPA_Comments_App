@@ -1,9 +1,9 @@
 .comment-container {
-  margin-top: 10px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #f9f9f9;
+  margin-bottom: 10px;
 }
 
 .comment-container strong {
@@ -16,14 +16,23 @@
   font-size: 12px;
 }
 
-.comment-container a {
-  color: #007bff;
-  text-decoration: none;
-}
-
 .comment-container .comment-text {
   margin: 10px 0;
   font-size: 14px;
   line-height: 1.5;
   color: #444;
+}
+
+.comment-container button {
+  margin-right: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.comment-container button:hover {
+  background-color: #0056b3;
 }

@@ -25,6 +25,7 @@ class CommentSerializer(serializers.ModelSerializer):
             captcha = CaptchaStore.objects.get(hashkey=captcha_key)
             if captcha.response != captcha_value.lower():
                 print('Bad CAPTCHA')
+                print(serializers.ValidationError("Неверный код CAPTCHA."))
                 raise serializers.ValidationError("Неверный код CAPTCHA.")
         except CaptchaStore.DoesNotExist:
             raise serializers.ValidationError("CAPTCHA недействительна.")
@@ -39,6 +40,7 @@ class CommentSerializer(serializers.ModelSerializer):
         value = value.replace('\r\n', '<br>')
         value = value.replace('\n', '<br>').replace('\r', '<br>')
         print("Изменённое значение:", repr(value))
+
         def preserve_code_blocks(match):
             content = match.group(1)  # Текст внутри <code>
             return f"<code style=\"white-space: pre;\">{content}</code>"
@@ -64,5 +66,4 @@ class CommentSerializer(serializers.ModelSerializer):
         if clean_text != value:
             raise serializers.ValidationError("Некорректный или запрещённый HTML-код.")
 
-        print('asdasd')
         return clean_text

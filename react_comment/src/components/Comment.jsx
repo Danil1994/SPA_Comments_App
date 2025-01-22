@@ -18,14 +18,14 @@ const Comment = ({ comment, level = 0 }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
 
   const handleShowReplies = async () => {
-    if (!showReplies) {
+    if (!showReplies && replies.length === 0) {
       const response = await fetchReplies(comment.id);
       setReplies(response.data);
     }
     setShowReplies(!showReplies);
   };
 
-  const handleAddReply = (newReply) => {
+const handleAddReply = (newReply) => {
     setReplies((prevReplies) => [...prevReplies, newReply]); // Добавляем новый ответ в список
     setShowReplyForm(false); // Закрываем форму после добавления
   };
@@ -51,9 +51,9 @@ const Comment = ({ comment, level = 0 }) => {
         </p>
       )}
 
-{comment.image && (
-  <CommentImage image={`${BASE_URL}${comment.image}`} />
-)}
+    {comment.image && (
+      <CommentImage image={`${BASE_URL}${comment.image}`} />
+    )}
 
 
       {comment.file && (

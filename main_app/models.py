@@ -36,7 +36,7 @@ class Comment(models.Model):
         return f"{self.user_name} - {self.text[:30]}"
 
     def clean(self):
-        ALLOWED_TAGS = ['a', 'code', 'i', 'strong']
+        ALLOWED_TAGS = ['a', 'code', 'i', 'strong', 'p', 'br']
         ALLOWED_ATTRIBUTES = {
             'a': ['href', 'title']
         }
@@ -53,6 +53,7 @@ class Comment(models.Model):
 
         if not bleach.ALLOWED_TAGS or not bleach.ALLOWED_ATTRIBUTES:
             raise ValidationError("HTML-код сообщения некорректен.")
+
         super().clean()
 
     class Meta:

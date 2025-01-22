@@ -68,6 +68,7 @@ const CommentForm = ({ onAdd, parent = null }) => {
     }
   };
 
+
 const addHtmlTag = (tag) => {
   const textarea = textareaRef.current; // Получаем textarea через ref
   if (!textarea) {
@@ -87,8 +88,6 @@ const addHtmlTag = (tag) => {
 
   setForm({ ...form, text: newText });
 };
-
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -115,10 +114,29 @@ const handleSubmit = async (e) => {
     setError("");
     loadCaptcha(); // Обновляем CAPTCHA после успешного отправления
   } catch (error) {
+    // Логируем ошибку для отладки
     console.error("Ошибка при добавлении комментария:", error);
-    setError("Ошибка проверки CAPTCHA или данных."); // Устанавливаем ошибку
+
+    if (error.response) {
+      // Ошибка от сервера (например, неверная CAPTCHA или проблема с текстом)
+      if (error.response.data) {
+        // Проверяем конкретные сообщения от сервера
+        if (error.response.data.detail && error.response.data.detail.includes("CAPTCHA")) {
+          setError("Неверный код CAPTCHA.");
+        } else if (error.response.data.detail && error.response.data.detail.includes("text")) {
+          setError("Ошибка с текстом комментария.");
+        } else {
+          setError("Ошибка при отправке данных. Попробуйте снова.");
+        }
+      } else {
+        setError("Неизвестная ошибка при отправке комментария.");
+      }
+    } else {
+      setError("Ошибка при подключении. Попробуйте снова.");
+    }
   }
 };
+
 
   return (
     <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
@@ -169,6 +187,7 @@ const handleSubmit = async (e) => {
         <img src={captcha.captcha_image} alt="CAPTCHA"/>
         <button type="button" onClick={loadCaptcha}>Обновить CAPTCHA</button>
       </div>
+
       <input
         type="text"
         name="captcha_value"

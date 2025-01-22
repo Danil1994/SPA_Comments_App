@@ -1,4 +1,5 @@
 import bleach
+import re
 
 from rest_framework import serializers
 from captcha.models import CaptchaStore
@@ -33,8 +34,18 @@ class CommentSerializer(serializers.ModelSerializer):
         return data
 
     def validate_text(self, value):
+
+        value = value.replace('\r\n', '<br>')
+        value = value.replace('\n', '<br>').replace('\r', '<br>')
+
+        def preserve_code_blocks(match):
+            content = match.group(1)  # Текст внутри <code>
+            return f"<code style=\"white-space: pre;\">{content}</code>"
+
+        value = re.sub(r"<code>(.*?)</code>", preserve_code_blocks, value, flags=re.DOTALL)
+
         # Разрешённые HTML-теги и атрибуты
-        ALLOWED_TAGS = ['a', 'code', 'i', 'strong']
+        ALLOWED_TAGS = ['a', 'code', 'i', 'strong', 'br']
         ALLOWED_ATTRIBUTES = {
             'a': ['href', 'title']
         }
@@ -47,8 +58,10 @@ class CommentSerializer(serializers.ModelSerializer):
             strip=True
         )
 
+        clean_text = clean_text.replace('<code>', '<code style="white-space: pre;">')
         # Проверяем, что текст корректен
         if clean_text != value:
             raise serializers.ValidationError("Некорректный или запрещённый HTML-код.")
 
+        print('asdasd')
         return clean_text

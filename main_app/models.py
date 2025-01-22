@@ -36,7 +36,7 @@ class Comment(models.Model):
         return f"{self.user_name} - {self.text[:30]}"
 
     def clean(self):
-        ALLOWED_TAGS = ['a', 'code', 'i', 'strong', 'p', 'br']
+        ALLOWED_TAGS = ['a', 'code', 'i', 'strong', 'br']
         ALLOWED_ATTRIBUTES = {
             'a': ['href', 'title']
         }

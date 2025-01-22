@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { fetchReplies } from "../services/api";
 import CommentForm from "./CommentForm";
+import "../css/Comment.css";
 
 const BASE_URL = "http://127.0.0.1:8000";
 
@@ -28,10 +29,14 @@ const Comment = ({ comment }) => {
   };
 
   return (
-    <div style={{ marginLeft: comment.parent ? "20px" : "0px", marginTop: "10px" }}>
-      <strong>{comment.user_name}</strong> ({comment.email}) написал в{" "}
+    <div className="comment-container">
+      <strong>{comment.user_name}</strong>
+      <span> ({comment.email})</span> написал в{" "}
       <strong>{comment.created_at ? formatDate(comment.created_at) : "неизвестное время"}</strong>:
-      <div dangerouslySetInnerHTML={{ __html: comment.text }} />
+      <div
+        className="comment-text"
+        dangerouslySetInnerHTML={{ __html: comment.text }}
+      />
 
       {/* Если есть home_page (ссылка на сайт), отображаем ссылку */}
       {comment.home_page && (

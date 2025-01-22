@@ -83,9 +83,14 @@ const addHtmlTag = (tag) => {
   const after = textarea.value.substring(end);
 
   // Вставляем выбранный текст в теги
-  const wrappedText = `<${tag}>${selectedText}</${tag}>`;
-  const newText = before + wrappedText + after;
+    let wrappedText;
+  if (tag === "a") {
+    wrappedText = `<a href="" title="">${selectedText}</a>`;
+  } else {
+    wrappedText = `<${tag}>${selectedText}</${tag}>`;
+  }
 
+  const newText = before + wrappedText + after;
   setForm({ ...form, text: newText });
 };
 

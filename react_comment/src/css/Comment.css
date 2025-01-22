@@ -1,0 +1,29 @@
+.comment-container {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.comment-container strong {
+  color: #333;
+  font-size: 16px;
+}
+
+.comment-container span {
+  color: #777;
+  font-size: 12px;
+}
+
+.comment-container a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.comment-container .comment-text {
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #444;
+}

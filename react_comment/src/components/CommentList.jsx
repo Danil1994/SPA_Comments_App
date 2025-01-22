@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { fetchComments } from "../services/api";
 import Comment from "./Comment";
 
+import "../css/CommentList.css";
+
 const CommentList = () => {
   const [comments, setComments] = useState([]);
   const [page, setPage] = useState(1);
@@ -17,8 +19,8 @@ const CommentList = () => {
   }, [page, sortBy, order]);
 
   return (
-    <div>
-      <div>
+    <div className="comment-list">
+      <div className="sort-buttons">
         <button onClick={() => setSortBy("user_name")}>Сортировать по имени</button>
         <button onClick={() => setSortBy("email")}>Сортировать по email</button>
         <button onClick={() => setSortBy("created_at")}>Сортировать по дате</button>
@@ -26,10 +28,14 @@ const CommentList = () => {
           {order === "asc" ? "По убыванию" : "По возрастанию"}
         </button>
       </div>
+
       {comments.map((comment) => (
-        <Comment key={comment.id} comment={comment} />
+        <div key={comment.id} className="comment-item">
+          <Comment comment={comment} />
+        </div>
       ))}
-      <div>
+
+      <div className="pagination">
         <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>Предыдущая</button>
         <button onClick={() => setPage((prev) => prev + 1)}>Следующая</button>
       </div>

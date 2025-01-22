@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { fetchReplies } from "../services/api";
 import CommentForm from "./CommentForm";
+import CommentImage from "./Image";
 import "../css/Comment.css"; // Подключаем CSS
 
 const BASE_URL = "http://127.0.0.1:8000";
@@ -50,15 +51,10 @@ const Comment = ({ comment, level = 0 }) => {
         </p>
       )}
 
-      {comment.image && (
-        <div>
-          <img
-            src={`${BASE_URL}${comment.image}`}
-            alt="comment image"
-            style={{ maxWidth: "320px", height: "240px" }}
-          />
-        </div>
-      )}
+{comment.image && (
+  <CommentImage image={`${BASE_URL}${comment.image}`} />
+)}
+
 
       {comment.file && (
         <div>

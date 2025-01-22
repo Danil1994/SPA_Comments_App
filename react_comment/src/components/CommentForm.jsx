@@ -10,6 +10,7 @@ const CommentForm = ({ onAdd, parent = null }) => {
   const [file, setFile] = useState(null);
   const [captcha, setCaptcha] = useState({ captcha_key: "", captcha_image: "" });
   const [error, setError] = useState("");
+  const textareaRef = React.useRef(null);
 
 
   useEffect(() => {
@@ -66,6 +67,27 @@ const CommentForm = ({ onAdd, parent = null }) => {
       setError("");
     }
   };
+
+const addHtmlTag = (tag) => {
+  const textarea = textareaRef.current; // Получаем textarea через ref
+  if (!textarea) {
+    setError("Не удалось найти текстовое поле.");
+    return;
+  }
+
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selectedText = textarea.value.substring(start, end);
+  const before = textarea.value.substring(0, start);
+  const after = textarea.value.substring(end);
+
+  // Вставляем выбранный текст в теги
+  const wrappedText = `<${tag}>${selectedText}</${tag}>`;
+  const newText = before + wrappedText + after;
+
+  setForm({ ...form, text: newText });
+};
+
 
 
 const handleSubmit = async (e) => {
@@ -124,15 +146,26 @@ const handleSubmit = async (e) => {
       value={form.home_page || ""}
       onChange={handleChange}
       />
-      <textarea
-        name="text"
-        placeholder="Напишите ваш комментарий..."
-        value={form.text}
-        onChange={handleChange}
-        required
-      />
 
-    <div>
+            {/* Панель с кнопками HTML-тегов */}
+      <div style={{ marginBottom: "10px" }}>
+        <button type="button" onClick={() => addHtmlTag("i")}>[i]</button>
+        <button type="button" onClick={() => addHtmlTag("strong")}>[strong]</button>
+        <button type="button" onClick={() => addHtmlTag("code")}>[code]</button>
+        <button type="button" onClick={() => addHtmlTag("a")}>[a]</button>
+      </div>
+
+        <textarea
+          ref={textareaRef} // Привязываем ref
+          id="comment-textarea"
+          name="text"
+          placeholder="Напишите ваш комментарий..."
+          value={form.text}
+          onChange={handleChange}
+          required
+        />
+
+        <div>
         <img src={captcha.captcha_image} alt="CAPTCHA"/>
         <button type="button" onClick={loadCaptcha}>Обновить CAPTCHA</button>
       </div>

@@ -31,7 +31,7 @@ const Comment = ({ comment }) => {
     <div style={{ marginLeft: comment.parent ? "20px" : "0px", marginTop: "10px" }}>
       <strong>{comment.user_name}</strong> ({comment.email}) написал в{" "}
       <strong>{comment.created_at ? formatDate(comment.created_at) : "неизвестное время"}</strong>:
-      <p>{comment.text}</p>
+      <div dangerouslySetInnerHTML={{ __html: comment.text }} />
 
       {/* Если есть home_page (ссылка на сайт), отображаем ссылку */}
       {comment.home_page && (

@@ -40,3 +40,23 @@
 .comment-list .comment-item:last-child {
   border-bottom: none;
 }
+
+.sort-buttons button {
+  margin-right: 5px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.sort-buttons button:hover {
+  background-color: #e0e0e0;
+}
+
+.sort-buttons button.selected {
+  background-color: #003366;
+  color: white;
+  border: 1px solid #00224d;
+  font-weight: bold;
+}

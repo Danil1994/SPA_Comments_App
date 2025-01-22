@@ -5,7 +5,7 @@ const VALID_IMAGE_FORMATS = ["image/jpeg", "image/png", "image/gif"];
 const MAX_FILE_SIZE = 100 * 1024; // 100 КБ
 
 const CommentForm = ({ onAdd, parent = null }) => {
-  const [form, setForm] = useState({ user_name: "", email: "", text: "", captcha: "" });
+  const [form, setForm] = useState({ user_name: "", email: "", text: "", home_page: "", captcha: "" });
   const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
   const [captcha, setCaptcha] = useState({ captcha_key: "", captcha_image: "" });
@@ -63,8 +63,7 @@ const handleSubmit = async (e) => {
     formData.append("user_name", form.user_name);
     formData.append("email", form.email);
     formData.append("text", form.text);
-
-    // Добавляем CAPTCHA ключ и значение
+    formData.append("home_page", form.home_page);
     formData.append("captcha_key", captcha.captcha_key);
     formData.append("captcha_value", form.captcha_value);
 
@@ -76,7 +75,7 @@ const handleSubmit = async (e) => {
     onAdd(response.data);
 
     // Очищаем форму и обновляем CAPTCHA
-    setForm({ user_name: "", email: "", text: "", captcha_value: "" });
+    setForm({ user_name: "", email: "", text: "", home_page: "", captcha_value: "" });
     setImage(null);
     setFile(null);
     setError("");
@@ -86,8 +85,6 @@ const handleSubmit = async (e) => {
     setError("Ошибка проверки CAPTCHA или данных."); // Устанавливаем ошибку
   }
 };
-
-
 
   return (
     <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
@@ -108,6 +105,13 @@ const handleSubmit = async (e) => {
         onChange={handleChange}
         required
       />
+      <input
+      type="url"
+      name="home_page"
+      placeholder="Домашняя страница (необязательно)"
+      value={form.home_page || ""}
+      onChange={handleChange}
+      />
       <textarea
         name="text"
         placeholder="Напишите ваш комментарий..."
@@ -116,18 +120,18 @@ const handleSubmit = async (e) => {
         required
       />
 
-        <div>
-            <img src={captcha.captcha_image} alt="CAPTCHA"/>
-            <button type="button" onClick={loadCaptcha}>Обновить CAPTCHA</button>
-          </div>
-          <input
-            type="text"
-            name="captcha_value"
-            placeholder="Введите CAPTCHA"
-            value={form.captcha_value}
-            onChange={(e) => setForm({ ...form, captcha_value: e.target.value })}
-            required
-          />
+    <div>
+        <img src={captcha.captcha_image} alt="CAPTCHA"/>
+        <button type="button" onClick={loadCaptcha}>Обновить CAPTCHA</button>
+      </div>
+      <input
+        type="text"
+        name="captcha_value"
+        placeholder="Введите CAPTCHA"
+        value={form.captcha_value}
+        onChange={(e) => setForm({ ...form, captcha_value: e.target.value })}
+        required
+      />
 
       <input type="file" accept="image/*" onChange={handleImageChange} />
       <input type="file" accept=".txt" onChange={handleFileChange} />

@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from captcha.models import CaptchaStore
-from captcha.helpers import captcha_image_url
 from .models import Comment
 
 
@@ -28,11 +27,7 @@ class CommentSerializer(serializers.ModelSerializer):
         except CaptchaStore.DoesNotExist:
             raise serializers.ValidationError("CAPTCHA недействительна.")
 
-        print(captcha_key)
         del data['captcha_key']
         del data['captcha_value']
-        # Удаляем использованную CAPTCHA
-        # CaptchaStore.objects.filter(hashkey=captcha_key).delete()
-        print(captcha_key)
 
         return data

@@ -1,12 +1,8 @@
 import bleach
+import re
 
 from django.db import models
-from captcha.fields import CaptchaField
-
-ALLOWED_TAGS = ['a', 'code', 'i', 'strong']
-ALLOWED_ATTRIBUTES = {
-    'a': ['href', 'title']
-}
+from django.core.exceptions import ValidationError
 
 
 class Comment(models.Model):
@@ -40,13 +36,24 @@ class Comment(models.Model):
         return f"{self.user_name} - {self.text[:30]}"
 
     def clean(self):
-        super().clean()
+        ALLOWED_TAGS = ['a', 'code', 'i', 'strong']
+        ALLOWED_ATTRIBUTES = {
+            'a': ['href', 'title']
+        }
+
+        if not re.match(r'^[a-zA-Z0-9]*$', self.user_name):
+            raise ValidationError("Имя пользователя может содержать только латинские буквы и цифры.")
+
         self.text = bleach.clean(
             self.text,
             tags=ALLOWED_TAGS,
             attributes=ALLOWED_ATTRIBUTES,
             strip=True
         )
+
+        if not bleach.ALLOWED_TAGS or not bleach.ALLOWED_ATTRIBUTES:
+            raise ValidationError("HTML-код сообщения некорректен.")
+        super().clean()
 
     class Meta:
         ordering = ['-created_at']

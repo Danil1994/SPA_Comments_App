@@ -1,3 +1,5 @@
+import bleach
+
 from rest_framework import serializers
 from captcha.models import CaptchaStore
 from .models import Comment
@@ -12,10 +14,8 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_name', 'email', 'home_page', 'text', 'created_at', 'parent', 'captcha_key', 'captcha_value', 'image', 'file']
 
     def validate(self, data):
-        # Проверяем CAPTCHA
         captcha_key = data.get('captcha_key')
         captcha_value = data.get('captcha_value')
-        print(data)
 
         if not captcha_key or not captcha_value:
             raise serializers.ValidationError("CAPTCHA обязательна.")
@@ -31,3 +31,24 @@ class CommentSerializer(serializers.ModelSerializer):
         del data['captcha_value']
 
         return data
+
+    def validate_text(self, value):
+        # Разрешённые HTML-теги и атрибуты
+        ALLOWED_TAGS = ['a', 'code', 'i', 'strong']
+        ALLOWED_ATTRIBUTES = {
+            'a': ['href', 'title']
+        }
+
+        # Очищаем текст
+        clean_text = bleach.clean(
+            value,
+            tags=ALLOWED_TAGS,
+            attributes=ALLOWED_ATTRIBUTES,
+            strip=True
+        )
+
+        # Проверяем, что текст корректен
+        if clean_text != value:
+            raise serializers.ValidationError("Некорректный или запрещённый HTML-код.")
+
+        return clean_text

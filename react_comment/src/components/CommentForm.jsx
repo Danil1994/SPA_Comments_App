@@ -26,7 +26,19 @@ const CommentForm = ({ onAdd, parent = null }) => {
   };
 
   const handleChange = (e) => {
+      const { name, value } = e.target;
+
+  if (name === "user_name") {
+    // Проверка: только латинские буквы и цифры
+    const isValid = /^[a-zA-Z0-9]*$/.test(value);
+    if (!isValid) {
+      setError("Имя пользователя может содержать только буквы латинского алфавита и цифры.");
+      return;
+    }
+  }
+
     setForm({ ...form, [e.target.name]: e.target.value });
+    setError("");
   };
 
   const handleImageChange = (e) => {

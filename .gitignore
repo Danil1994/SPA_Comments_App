@@ -123,8 +123,9 @@ Control.system-ca-bundle
 GitHub.sublime-settings
 config/credentials.json
 
-*.json
+
 *.xls;xlsx;csv
+react_comment/public/*
 
 experiments.py
 

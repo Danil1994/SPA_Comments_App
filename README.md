@@ -31,7 +31,7 @@ Django backend (`main_app`) and a React frontend (`react_comment`).
 # Clone the repository
 git clone https://github.com/Danil1994/SPA_Comments_App.git
 
-# Navigate to the project folder
+# Navigate to the project folder if you are not here
 cd comments_app
 ```
 
@@ -72,7 +72,17 @@ python manage.py createsuperuser
 # Start the Django development server
 python manage.py runserver
 ```
-You may test it on http://127.0.0.1:8000/api/comments/(http://127.0.0.1:8000/api/comments/)
+You may test it on [http://127.0.0.1:8000/api/comments/](http://127.0.0.1:8000/api/comments/)
+
+But you have no one comment yet. 
+
+If you wish you may use next command to create fake data
+
+```commandline
+ python manage.py create_fake_data 10 5
+```
+This command create 10 main comments and random count of replies for each (between 0 and 5)
+After it, you may visit [http://127.0.0.1:8000/api/comments/](http://127.0.0.1:8000/api/comments/) again and check app`s work 
 
 ---
 
@@ -99,7 +109,7 @@ By default, the React application will run on [http://localhost:3000](http://loc
 ## Usage
 
 1. Open [http://localhost:3000](http://localhost:3000) to access the frontend application.
-2. The backend API is accessible at [http://127.0.0.1:8000](http://127.0.0.1:8000).
+2. The backend API is accessible at [http://127.0.0.1:8000/api/comments/](http://127.0.0.1:8000/api/comments/).
 3. Add, view, and reply to comments in real-time.
 4. Use CAPTCHA to secure form submissions.
 
@@ -115,32 +125,6 @@ By default, the React application will run on [http://localhost:3000](http://loc
 
 ---
 
-## Deployment
-
-For deployment, ensure that the following steps are completed:
-1. Configure a production-ready database (e.g., PostgreSQL).
-2. Set `DEBUG=False` in Django settings and configure `ALLOWED_HOSTS`.
-3. Build the React application using:
-   ```bash
-   npm run build
-   ```
-   Serve the built files with a web server like Nginx.
-
----
-
-## Troubleshooting
-
-### Common Issues
-
-1. **CAPTCHA Validation Fails**:
-   - Ensure the CAPTCHA API is accessible at `/captcha/`.
-   - Verify the `SECRET_KEY` in the `.env` file.
-
-2. **Static Files Not Loading in Production**:
-   - Run `python manage.py collectstatic`.
-   - Ensure the static files directory is correctly configured in your web server.
-
----
 
 ## License
 

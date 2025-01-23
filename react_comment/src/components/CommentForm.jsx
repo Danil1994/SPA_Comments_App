@@ -49,7 +49,7 @@ const CommentForm = ({ onAdd, parent = null }) => {
         setImage(null);
         return;
       }
-      setImage(); // Создаем URL для предварительного просмотра
+      setImage();
       setError("");
     }
   };
@@ -91,34 +91,47 @@ const CommentForm = ({ onAdd, parent = null }) => {
     setForm({ ...form, text: newText });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append("user_name", form.user_name);
-      formData.append("email", form.email);
-      formData.append("text", form.text);
-      formData.append("home_page", form.home_page);
-      formData.append("captcha_key", captcha.captcha_key);
-      formData.append("captcha_value", form.captcha_value);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const formData = new FormData();
+    formData.append("user_name", form.user_name);
+    formData.append("email", form.email);
+    formData.append("text", form.text);
+    formData.append("home_page", form.home_page);
+    formData.append("captcha_key", captcha.captcha_key);
+    formData.append("captcha_value", form.captcha_value);
 
-      if (parent) formData.append("parent", parent);
-      if (image) formData.append("image", image);
-      if (file) formData.append("file", file);
+    if (parent) formData.append("parent", parent);
+    if (image) formData.append("image", image);
+    if (file) formData.append("file", file);
 
-      const response = await addComment(formData);
-      onAdd(response.data);
+    const response = await addComment(formData);
+    onAdd(response.data);
 
-      setForm({ user_name: "", email: "", text: "", home_page: "", captcha_value: "" });
-      setImage(null);
-      setFile(null);
-      setError("");
-      loadCaptcha();
-    } catch (error) {
+    // Очищаем форму
+    setForm({ user_name: "", email: "", text: "", home_page: "", captcha_value: "" });
+    setImage(null);
+    setFile(null);
+    setError("");
+    loadCaptcha(); // Обновляем CAPTCHA
+  } catch (error) {
+    // Обрабатываем ответ с сервера
+    if (error.response && error.response.data) {
+      // Проверяем, есть ли ошибка CAPTCHA
+      if (error.response.data.captcha_value) {
+        setError(error.response.data.captcha_value[0]); // Устанавливаем сообщение об ошибке CAPTCHA
+      } else {
+        setError("Ошибка при отправке комментария. Попробуйте снова.");
+      }
+    } else {
       console.error("Ошибка при добавлении комментария:", error);
       setError("Ошибка при отправке комментария. Попробуйте снова.");
     }
-  };
+    loadCaptcha(); // Обновляем CAPTCHA в случае ошибки
+  }
+};
+
 
   return (
     <div>

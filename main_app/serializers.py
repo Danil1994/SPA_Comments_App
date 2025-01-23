@@ -24,11 +24,9 @@ class CommentSerializer(serializers.ModelSerializer):
         try:
             captcha = CaptchaStore.objects.get(hashkey=captcha_key)
             if captcha.response != captcha_value.lower():
-                print('Bad CAPTCHA')
-                print(serializers.ValidationError("Неверный код CAPTCHA."))
-                raise serializers.ValidationError("Неверный код CAPTCHA.")
+                raise serializers.ValidationError({"captcha_value": "Неверный код CAPTCHA."})
         except CaptchaStore.DoesNotExist:
-            raise serializers.ValidationError("CAPTCHA недействительна.")
+            raise serializers.ValidationError({"captcha_value":"CAPTCHA недействительна."})
 
         del data['captcha_key']
         del data['captcha_value']
@@ -36,10 +34,8 @@ class CommentSerializer(serializers.ModelSerializer):
         return data
 
     def validate_text(self, value):
-        print("Оригинальное значение:", repr(value))
         value = value.replace('\r\n', '<br>')
         value = value.replace('\n', '<br>').replace('\r', '<br>')
-        print("Изменённое значение:", repr(value))
 
         def preserve_code_blocks(match):
             content = match.group(1)  # Текст внутри <code>
@@ -64,6 +60,6 @@ class CommentSerializer(serializers.ModelSerializer):
         clean_text = clean_text.replace('<code>', '<code style="white-space: pre;">')
         # Проверяем, что текст корректен
         if clean_text != value:
-            raise serializers.ValidationError("Некорректный или запрещённый HTML-код.")
+            raise serializers.ValidationError({"captcha_value":"Некорректный или запрещённый HTML-код."})
 
         return clean_text

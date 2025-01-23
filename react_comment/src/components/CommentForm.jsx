@@ -49,7 +49,7 @@ const CommentForm = ({ onAdd, parent = null }) => {
         setImage(null);
         return;
       }
-      setImage();
+      setImage(img);
       setError("");
     }
   };

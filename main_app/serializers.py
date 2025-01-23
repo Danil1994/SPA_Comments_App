@@ -60,6 +60,6 @@ class CommentSerializer(serializers.ModelSerializer):
 
         clean_text = clean_text.replace('<code>', '<code style="white-space: pre;">')
         if clean_text != value:
-            raise serializers.ValidationError({"captcha_value": "Некорректный или запрещённый HTML-код."})
+            raise serializers.ValidationError({"captcha_value": "Incorrect or prohibited HTML code."})
 
         return clean_text

@@ -29,7 +29,7 @@ Django backend (`main_app`) and a React frontend (`react_comment`).
 ### 1. Clone the Repository
 ```bash
 # Clone the repository
-git clone <repository_url>
+git clone https://github.com/Danil1994/SPA_Comments_App.git
 
 # Navigate to the project folder
 cd comments_app
@@ -42,6 +42,8 @@ cd comments_app
 # Create and activate a virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+or use your IDE
 
 # Install Python dependencies
 pip install -r requirements.txt

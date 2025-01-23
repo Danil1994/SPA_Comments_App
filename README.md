@@ -1,6 +1,6 @@
 # Comments App
 
-**Comments App** is a SPA web application for creating and managing comments. It includes a 
+**Comments App** is an SPA web application for creating and managing comments. It includes a 
 Django backend (`main_app`) and a React frontend (`react_comment`). 
 
 ---
@@ -70,7 +70,7 @@ python manage.py createsuperuser
 # Start the Django development server
 python manage.py runserver
 ```
-By default, the server will run on [http://127.0.0.1:8000](http://127.0.0.1:8000).
+You may test it on http://127.0.0.1:8000/api/comments/(http://127.0.0.1:8000/api/comments/)
 
 ---
 

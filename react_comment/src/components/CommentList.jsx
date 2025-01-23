@@ -19,12 +19,12 @@ const CommentList = () => {
         const response = await fetchComments(page, sortBy, order);
         setComments(response.data.results);
 
-        // Обновляем состояние пагинации
-        setHasNext(!!response.data.next); // Если `next` есть, кнопка "Следующая" активна
-        setHasPrevious(!!response.data.previous); // Если `previous` есть, кнопка "Предыдущая" активна
+        // update pagination
+        setHasNext(!!response.data.next);
+        setHasPrevious(!!response.data.previous);
         window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (error) {
-        console.error("Ошибка загрузки комментариев:", error);
+        console.error("Error loading comments: ", error);
       }
     };
     loadComments();
@@ -39,25 +39,25 @@ const CommentList = () => {
           className={getButtonClass("user_name")}
           onClick={() => setSortBy("user_name")}
         >
-          Сортировать по имени
+          Sort By Name
         </button>
         <button
           className={getButtonClass("email")}
           onClick={() => setSortBy("email")}
         >
-          Сортировать по email
+          Sort by Email
         </button>
         <button
           className={getButtonClass("created_at")}
           onClick={() => setSortBy("created_at")}
         >
-          Сортировать по дате
+          Sort by date
         </button>
         <button
           className={order === "asc" ? "selected" : ""}
           onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
         >
-          {order === "asc" ? "По убыванию" : "По возрастанию"}
+          {order === "asc" ? "Descending" : "Ascending"}
         </button>
       </div>
 
@@ -69,12 +69,10 @@ const CommentList = () => {
 
         <div className="pagination">
         {hasPrevious && (
-          <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>
-            Предыдущая
-          </button>
+          <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>Previous</button>
         )}
         {hasNext && (
-          <button onClick={() => setPage((prev) => prev + 1)}>Следующая</button>
+          <button onClick={() => setPage((prev) => prev + 1)}>Next</button>
         )}
       </div>
     </div>

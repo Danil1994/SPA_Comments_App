@@ -1,6 +1,8 @@
 import random
+
 from django.core.management.base import BaseCommand
 from faker import Faker
+
 from ....main_app.models import Comment
 
 fake = Faker()

@@ -1,8 +1,8 @@
-import bleach
 import re
 
-from django.db import models
+import bleach
 from django.core.exceptions import ValidationError
+from django.db import models
 
 
 class Comment(models.Model):
@@ -42,7 +42,7 @@ class Comment(models.Model):
         }
 
         if not re.match(r'^[a-zA-Z0-9]*$', self.user_name):
-            raise ValidationError("Имя пользователя может содержать только латинские буквы и цифры.")
+            raise ValidationError("The username can only contain Latin letters and numbers..")
 
         self.text = bleach.clean(
             self.text,
@@ -52,7 +52,7 @@ class Comment(models.Model):
         )
 
         if not bleach.ALLOWED_TAGS or not bleach.ALLOWED_ATTRIBUTES:
-            raise ValidationError("HTML-код сообщения некорректен.")
+            raise ValidationError("HTML-messages code invalid.")
 
         super().clean()
 

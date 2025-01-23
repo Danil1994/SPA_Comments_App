@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { fetchReplies } from "../services/api";
 import CommentForm from "./CommentForm";
 import CommentImage from "./Image";
-import "../css/Comment.css"; // Подключаем CSS
+import "../css/Comment.css";
 
 const BASE_URL = "http://127.0.0.1:8000";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  return date.toLocaleString(); // Это отформатирует дату в удобочитаемый формат
+  return date.toLocaleString(); // transform date to good view
 };
 
 
@@ -26,18 +26,18 @@ const Comment = ({ comment, level = 0 }) => {
   };
 
 const handleAddReply = (newReply) => {
-    setReplies((prevReplies) => [...prevReplies, newReply]); // Добавляем новый ответ в список
-    setShowReplyForm(false); // Закрываем форму после добавления
+    setReplies((prevReplies) => [...prevReplies, newReply]);
+    setShowReplyForm(false);
   };
 
   return (
     <div
       className="comment-container"
-      style={{ marginLeft: `${level * 20}px`, marginTop: "10px" }} // Увеличиваем отступ с каждым уровнем
+      style={{ marginLeft: `${level * 20}px`, marginTop: "10px" }}
     >
       <strong>{comment.user_name}</strong>
-      <span> ({comment.email})</span> написал в{" "}
-      <strong>{comment.created_at ? formatDate(comment.created_at) : "неизвестное время"}</strong>:
+      <span> ({comment.email})</span> {" wrote in "}
+      <strong>{comment.created_at ? formatDate(comment.created_at) : "invalid time"}</strong>:
       <div
         className="comment-text"
         dangerouslySetInnerHTML={{ __html: comment.text }}
@@ -46,7 +46,7 @@ const handleAddReply = (newReply) => {
       {comment.home_page && (
         <p>
           <a href={comment.home_page} target="_blank" rel="noopener noreferrer">
-            Перейти на страницу автора
+            Go to the authors page
           </a>
         </p>
       )}
@@ -59,17 +59,17 @@ const handleAddReply = (newReply) => {
       {comment.file && (
         <div>
           <a href={`${BASE_URL}${comment.file}`} target="_blank" rel="noopener noreferrer">
-            <button>Скачать файл</button>
+            <button> Download file </button>
           </a>
         </div>
       )}
 
       <button onClick={handleShowReplies}>
-        {showReplies ? "Скрыть комментарии" : `Показать комментарии`}
+        {showReplies ? "Hide comments" : `Show comments`}
       </button>
 
       <button onClick={() => setShowReplyForm(!showReplyForm)}>
-        {showReplyForm ? "Отменить" : "Написать ответ"}
+        {showReplyForm ? "Cancel" : "Write answer"}
       </button>
 
       {showReplyForm && (

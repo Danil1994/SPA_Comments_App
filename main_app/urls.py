@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import CommentListView, ReplyListView, CaptchaAPIView
+
+from .views import CaptchaAPIView, CommentListView, ReplyListView
 
 urlpatterns = [
     path('comments/', CommentListView.as_view(), name='comment-list'),

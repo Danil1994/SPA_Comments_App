@@ -22,7 +22,7 @@ const CommentForm = ({ onAdd, parent = null }) => {
       const response = await fetchCaptcha();
       setCaptcha(response.data);
     } catch (error) {
-      console.error("Ошибка загрузки CAPTCHA:", error);
+      console.error("Loading error CAPTCHA:", error);
     }
   };
 
@@ -32,7 +32,7 @@ const CommentForm = ({ onAdd, parent = null }) => {
     if (name === "user_name") {
       const isValid = /^[a-zA-Z0-9]*$/.test(value);
       if (!isValid) {
-        setError("Имя пользователя может содержать только буквы латинского алфавита и цифры.");
+        setError("The username can only contain Latin letters and numbers.");
         return;
       }
     }
@@ -45,7 +45,7 @@ const CommentForm = ({ onAdd, parent = null }) => {
     const img = e.target.files[0];
     if (img) {
       if (!VALID_IMAGE_FORMATS.includes(img.type)) {
-        setError("Недопустимый формат изображения. Поддерживаются JPG, PNG, GIF.");
+        setError("Invalid image format. Supported JPG, PNG, GIF.");
         setImage(null);
         return;
       }
@@ -58,7 +58,7 @@ const CommentForm = ({ onAdd, parent = null }) => {
     const txtFile = e.target.files[0];
     if (txtFile) {
       if (txtFile.size > MAX_FILE_SIZE || !txtFile.name.endsWith(".txt")) {
-        setError("Размер файла не должен превышать 100 КБ, и допустим только формат .txt.");
+        setError("The file size must not exceed 100 KB, and the only acceptable format is .txt");
         setFile(null);
         return;
       }
@@ -70,7 +70,7 @@ const CommentForm = ({ onAdd, parent = null }) => {
   const addHtmlTag = (tag) => {
     const textarea = textareaRef.current;
     if (!textarea) {
-      setError("Не удалось найти текстовое поле.");
+      setError("Could not find text field.");
       return;
     }
 
@@ -109,26 +109,25 @@ const handleSubmit = async (e) => {
     const response = await addComment(formData);
     onAdd(response.data);
 
-    // Очищаем форму
+    // Clean form
     setForm({ user_name: "", email: "", text: "", home_page: "", captcha_value: "" });
     setImage(null);
     setFile(null);
     setError("");
-    loadCaptcha(); // Обновляем CAPTCHA
+    loadCaptcha(); // refresh CAPTCHA
   } catch (error) {
-    // Обрабатываем ответ с сервера
+    // handling servers response
     if (error.response && error.response.data) {
-      // Проверяем, есть ли ошибка CAPTCHA
       if (error.response.data.captcha_value) {
-        setError(error.response.data.captcha_value[0]); // Устанавливаем сообщение об ошибке CAPTCHA
+        setError(error.response.data.captcha_value[0]);
       } else {
-        setError("Ошибка при отправке комментария. Попробуйте снова.");
+        setError("Error sending comment. Try again.");
       }
     } else {
-      console.error("Ошибка при добавлении комментария:", error);
-      setError("Ошибка при отправке комментария. Попробуйте снова.");
+      console.error("Error adding comment:", error);
+      setError("Error sending comment. Try again.");
     }
-    loadCaptcha(); // Обновляем CAPTCHA в случае ошибки
+    loadCaptcha();
   }
 };
 
@@ -141,7 +140,7 @@ const handleSubmit = async (e) => {
         <input
           type="text"
           name="user_name"
-          placeholder="Имя"
+          placeholder="Name"
           value={form.user_name}
           onChange={handleChange}
           required
@@ -159,7 +158,7 @@ const handleSubmit = async (e) => {
         <input
           type="url"
           name="home_page"
-          placeholder="Домашняя страница (необязательно)"
+          placeholder="Home page (optional)"
           value={form.home_page || ""}
           onChange={handleChange}
         />
@@ -175,7 +174,7 @@ const handleSubmit = async (e) => {
           ref={textareaRef}
           id="comment-textarea"
           name="text"
-          placeholder="Напишите ваш комментарий..."
+          placeholder="Write tour comment..."
           value={form.text}
           onChange={handleChange}
           required
@@ -183,13 +182,13 @@ const handleSubmit = async (e) => {
 
         <div>
           <img src={captcha.captcha_image} alt="CAPTCHA" />
-          <button type="button" onClick={loadCaptcha}>Обновить CAPTCHA</button>
+          <button type="button" onClick={loadCaptcha}>Update CAPTCHA</button>
         </div>
 
         <input
           type="text"
           name="captcha_value"
-          placeholder="Введите CAPTCHA"
+          placeholder="Enter CAPTCHA"
           value={form.captcha_value}
           onChange={(e) => setForm({ ...form, captcha_value: e.target.value })}
           required
@@ -198,17 +197,17 @@ const handleSubmit = async (e) => {
         <input type="file" accept="image/*" onChange={handleImageChange} />
         <input type="file" accept=".txt" onChange={handleFileChange} />
 
-        <button type="submit">Отправить</button>
+        <button type="submit">Send</button>
       </form>
 
-      {/* Превью комментария */}
+      {/* comment`s preview */}
       <div className="comment-preview">
-        <h3>Предварительный просмотр</h3>
-        <p><strong>Имя:</strong> {form.user_name}</p>
+        <h3> Preview </h3>
+        <p><strong>Name:</strong> {form.user_name}</p>
         <p><strong>Email:</strong> {form.email}</p>
         {form.home_page && (
           <p>
-            <strong>Домашняя страница:</strong>{" "}
+            <strong>Home page:</strong>{" "}
             <a href={form.home_page} target="_blank" rel="noopener noreferrer">{form.home_page}</a>
           </p>
         )}

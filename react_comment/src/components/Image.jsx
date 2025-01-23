@@ -13,7 +13,7 @@ const CommentImage = ({ image }) => {
 
   return (
     <div className="comment-image-container">
-      {/* Отображение миниатюры изображения */}
+      {/* show mini photo */}
       <img
         src={image}
         alt="Comment"
@@ -21,7 +21,7 @@ const CommentImage = ({ image }) => {
         onClick={handleImageClick}
       />
 
-      {/* Модальное окно для увеличенного изображения */}
+      {/* modal window to showing big photo  */}
       {isModalOpen && (
         <div className="modal" onClick={closeModal}>
           <span className="modal-close">&times;</span>

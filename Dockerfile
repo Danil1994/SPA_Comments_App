@@ -1,10 +1,14 @@
-FROM python:3.9-slim
+FROM python:3.9-slim-buster
 
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+COPY ./requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+RUN pip install gunicorn
+
+EXPOSE 8000
+
+CMD ["sh", "-c", "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 comments_app.wsgi"]

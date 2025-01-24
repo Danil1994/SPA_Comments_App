@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  backend:
+    image: danil1994/comments_app:latest
+    container_name: comments_app
+    ports:
+      - "8000:8000"
+
+  frontend:
+    image: danil1994/react_comment:latest
+    container_name: react_comment
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend

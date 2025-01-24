@@ -31,8 +31,6 @@ Django backend (`main_app`) and a React frontend (`react_comment`).
 # Clone the repository
 git clone https://github.com/Danil1994/SPA_Comments_App.git
 
-# Navigate to the project folder if you are not here
-cd comments_app
 ```
 
 ### 2. Backend Setup
@@ -103,6 +101,29 @@ npm install
 npm start
 ```
 By default, the React application will run on [http://localhost:3000](http://localhost:3000).
+
+▶️ Running with Docker Compose
+
+You can run the application using Docker Compose:
+
+Install Docker and Docker Compose
+Ensure Docker and Docker Compose are installed on your system. You can download them from Docker's official site.
+
+Clone the Repository
+
+git clone https://github.com/Danil1994/SPA_Comments_App.git
+
+Run Docker Compose
+
+docker-compose up
+
+Access the Application
+
+Frontend: http://localhost:3000
+
+Backend: [http://127.0.0.1:8000/api/comments/](http://127.0.0.1:8000/api/comments/)
+
+This will pull the required images (danil1994/comments_app for the backend and danil1994/react_comment for the frontend) and start the services.
 
 ---
 

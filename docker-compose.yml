@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   backend:
-    image: danil1994/comments_app:latest
+    image: danil1994/spa_comments:latest
     container_name: comments_app
     ports:
       - "8000:8000"
